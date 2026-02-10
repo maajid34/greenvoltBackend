@@ -31,7 +31,7 @@ import {
   getProjectById,
   updateProject,
   deleteProject,
-} from "../controllers/ProjectController.js";
+} from "../controllers/PController.js";
 
 import { upload } from "../middleware/uploadR2.js";
 import { protect, adminOnly } from "../middleware/authMiddleware.js";
