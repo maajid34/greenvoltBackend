@@ -31,7 +31,7 @@ import {
   getProjectById,
   updateProject,
   deleteProject,
-} from "../controllers/projectController.js";
+} from "../controllers/ProjectController.js";
 
 import { upload } from "../middleware/uploadR2.js";
 import { protect, adminOnly } from "../middleware/authMiddleware.js";
@@ -50,9 +50,13 @@ router.get("/id/:id", getProjectById);          // ✅ ID
 router.get("/slug/:slug", getSingleProjectBySlug); // ✅ SLUG
 
 /* UPDATE */
-router.put("/:id",protect,adminOnly, upload.single("image"), updateProject);
+router.put("/:id",
+  // protect,adminOnly, 
+  upload.single("image"), updateProject);
 
 /* DELETE */
-router.delete("/:id",protect,adminOnly, deleteProject);
+router.delete("/:id",
+  // protect,adminOnly, 
+  deleteProject);
 
 export default router;
