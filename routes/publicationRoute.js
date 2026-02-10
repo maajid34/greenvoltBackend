@@ -25,13 +25,15 @@ router.post(
 
 router.put(
   "/:id",
-  protect,
-  adminOnly,
+  // protect,
+  // adminOnly,
   uploadDoc,
   uploadToR2,
   updatePublication
 );
 
-router.delete("/:id", protect, adminOnly, deletePublication);
+router.delete("/:id",
+  //  protect, adminOnly,
+   deletePublication);
 
 export default router;

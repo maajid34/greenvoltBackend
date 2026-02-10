@@ -39,7 +39,7 @@ import { protect, adminOnly } from "../middleware/authMiddleware.js";
 const router = express.Router();
 
 /* CREATE */
-router.post("/", upload.single("image"), createProject);
+router.post("/",protect,adminOnly, upload.single("image"), createProject);
 
 /* READ */
 router.get("/", getProjects);
