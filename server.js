@@ -61,7 +61,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 
-import projectRoutes from "./routes/projectRoutess.js";
+import projectRoutes from "./routes/projectRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import publicationRoutes from "./routes/publicationRoute.js";
