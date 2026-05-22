@@ -36,9 +36,15 @@ const projectSchema = new mongoose.Schema(
     },
 
     image: {
-      type: String, // ✅ Cloudflare Image URL
-      required: true,
-    },
+  type: String,
+  required: true,
+},
+
+photos: [
+  {
+    type: String,
+  },
+],
   },
   { timestamps: true }
 );

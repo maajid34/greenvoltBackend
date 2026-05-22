@@ -1,7 +1,10 @@
-// import Project from "../models/Project.js";
 
-// import { uploadToR2 } from "../middleware/uploadR2.js";
 
+
+import Project from "../models/Project.js";
+import { uploadToR2 } from "../middleware/uploadR2.js";
+
+/* CREATE */
 // export const createProject = async (req, res, next) => {
 //   try {
 //     let imageUrl = "";
@@ -20,74 +23,25 @@
 //     next(err);
 //   }
 // };
-// /* GET ALL PROJECTS */
-// export const getProjects = async (req, res) => {
-//   try {
-//     const projects = await Project.find()
-//       .populate("category", "name slug")
-//       .sort({ createdAt: -1 });
-
-//     res.json(projects);
-//   } catch (error) {
-//     res.status(500).json({ message: error.message });
-//   }
-// };
-
-// /* GET PROJECT BY SLUG */
-// export const getSingleProject = async (req, res) => {
-//   try {
-//     const project = await Project.findOne({ slug: req.params.slug })
-//       .populate("category", "name slug");
-
-//     if (!project) {
-//       return res.status(404).json({ message: "Project not found" });
-//     }
-
-//     res.json(project);
-//   } catch (error) {
-//     res.status(500).json({ message: error.message });
-//   }
-// };
-
-// /* GET PROJECTS BY CATEGORY */
-// export const getProjectsByCategory = async (req, res) => {
-//   try {
-//     const projects = await Project.find({ category: req.params.categoryId })
-//       .populate("category", "name slug");
-
-//     res.json(projects);
-//   } catch (error) {
-//     res.status(500).json({ message: error.message });
-//   }
-// };
-
-// export const getProjectById = async (req, res) => {
-//   const project = await Project.findById(req.params.id)
-//     .populate("category");
-
-//   if (!project) {
-//     return res.status(404).json({ message: "Project not found" });
-//   }
-
-//   res.json(project);
-// };
-
-
-import Project from "../models/Project.js";
-import { uploadToR2 } from "../middleware/uploadR2.js";
-
-/* CREATE */
 export const createProject = async (req, res, next) => {
   try {
     let imageUrl = "";
+    let photosUrls = [];
 
-    if (req.file) {
-      imageUrl = await uploadToR2(req.file);
+    if (req.files?.image?.[0]) {
+      imageUrl = await uploadToR2(req.files.image[0]);
+    }
+
+    if (req.files?.photos) {
+      photosUrls = await Promise.all(
+        req.files.photos.map((file) => uploadToR2(file))
+      );
     }
 
     const project = await Project.create({
       ...req.body,
       image: imageUrl,
+      photos: photosUrls,
     });
 
     res.status(201).json(project);
@@ -95,7 +49,6 @@ export const createProject = async (req, res, next) => {
     next(err);
   }
 };
-
 /* GET ALL */
 export const getProjects = async (req, res) => {
   const projects = await Project.find()
@@ -153,9 +106,20 @@ export const updateProject = async (req, res) => {
     }
 
     // haddii sawir cusub la soo diray
-    if (req.file) {
-      project.image = await uploadToR2(req.file);
-    }
+    // if (req.file) {
+    //   project.image = await uploadToR2(req.file);
+    // }
+    if (req.files?.image?.[0]) {
+  project.image = await uploadToR2(req.files.image[0]);
+}
+
+if (req.files?.photos) {
+  const newPhotos = await Promise.all(
+    req.files.photos.map((file) => uploadToR2(file))
+  );
+
+  project.photos = [...(project.photos || []), ...newPhotos];
+}
 
     // update fields
     project.title = req.body.title ?? project.title;
