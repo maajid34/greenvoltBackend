@@ -65,6 +65,9 @@ import projectRoutes from "./routes/projectRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import publicationRoutes from "./routes/publicationRoute.js";
+import blogRoutes from "./routes/blogRoutes.js";
+import partnerRoutes from "./routes/partnerRoutes.js";
+import testimonialRoutes from "./routes/testimonialRoutes.js";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 
 dotenv.config();
@@ -105,6 +108,9 @@ app.use("/api/projects", projectRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/publications", publicationRoutes);
+app.use("/api/blogs", blogRoutes);
+app.use("/api/partners", partnerRoutes);
+app.use("/api/testimonials", testimonialRoutes);
 
 /* ================= ERROR HANDLERS ================= */
 app.use(notFound);
