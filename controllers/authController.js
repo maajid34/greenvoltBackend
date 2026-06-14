@@ -64,7 +64,7 @@ const generateToken = (id) => {
 /* ================= REGISTER (ADMIN ONLY) ================= */
 export const registerUser = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, role } = req.body;
 
     const userExists = await User.findOne({ email });
     if (userExists) {
@@ -75,7 +75,7 @@ export const registerUser = async (req, res) => {
       name,
       email,
       password,
-      role: "user", // 🔐 IMPORTANT
+      role: role || "user",
     });
 
     res.status(201).json({
@@ -88,6 +88,46 @@ export const registerUser = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
+};
+
+/* ================= USERS MANAGEMENT ================= */
+export const getUsers = async (_req, res) => {
+  const users = await User.find().select("-password").sort({ createdAt: -1 });
+  res.json(users);
+};
+
+export const updateUser = async (req, res) => {
+  const { name, email, role, password } = req.body;
+  const user = await User.findById(req.params.id);
+
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+
+  user.name = name ?? user.name;
+  user.email = email ?? user.email;
+  user.role = role ?? user.role;
+
+  if (password) {
+    user.password = password;
+  }
+
+  const updated = await user.save();
+
+  res.json({
+    _id: updated._id,
+    name: updated.name,
+    email: updated.email,
+    role: updated.role,
+    createdAt: updated.createdAt,
+    updatedAt: updated.updatedAt,
+  });
+};
+
+export const deleteUser = async (req, res) => {
+  const user = await User.findByIdAndDelete(req.params.id);
+  if (!user) return res.status(404).json({ message: "User not found" });
+  res.json({ message: "User deleted" });
 };
 
 /* ================= LOGIN ================= */

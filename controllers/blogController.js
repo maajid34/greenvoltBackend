@@ -24,6 +24,18 @@ export const getBlogBySlug = async (req, res) => {
   res.json(blog);
 };
 
+export const getBlogByIdOrSlug = async (req, res) => {
+  const { identifier } = req.params;
+  const isObjectId = /^[0-9a-fA-F]{24}$/.test(identifier);
+
+  const blog = isObjectId
+    ? await Blog.findById(identifier)
+    : await Blog.findOne({ slug: identifier });
+
+  if (!blog) return res.status(404).json({ message: "Not found" });
+  res.json(blog);
+};
+
 export const updateBlog = async (req, res) => {
   const blog = await Blog.findByIdAndUpdate(req.params.id, req.body, {
     new: true,

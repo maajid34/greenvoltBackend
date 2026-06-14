@@ -2,7 +2,7 @@ import express from "express";
 import {
   createBlog,
   deleteBlog,
-  getBlogById,
+  getBlogByIdOrSlug,
   getBlogBySlug,
   getBlogs,
   updateBlog,
@@ -12,7 +12,7 @@ const router = express.Router();
 
 router.get("/", getBlogs);
 router.get("/slug/:slug", getBlogBySlug);
-router.get("/:id", getBlogById);
+router.get("/:identifier", getBlogByIdOrSlug);
 router.post("/", createBlog);
 router.put("/:id", updateBlog);
 router.delete("/:id", deleteBlog);
