@@ -62,6 +62,7 @@ const permissionModules = [
   "blogs",
   "partners",
   "testimonials",
+  "messages",
   "users",
 ];
 

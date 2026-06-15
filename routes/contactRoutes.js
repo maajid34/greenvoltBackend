@@ -5,13 +5,13 @@ import {
   getContactMessages,
   updateContactMessage,
 } from "../controllers/contactController.js";
-import { adminOnly, protect } from "../middleware/authMiddleware.js";
+import { hasPermission, protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
 router.post("/", createContactMessage);
-router.get("/", protect, adminOnly, getContactMessages);
-router.put("/:id", protect, adminOnly, updateContactMessage);
-router.delete("/:id", protect, adminOnly, deleteContactMessage);
+router.get("/", protect, hasPermission("messages"), getContactMessages);
+router.put("/:id", protect, hasPermission("messages", "edit"), updateContactMessage);
+router.delete("/:id", protect, hasPermission("messages", "edit"), deleteContactMessage);
 
 export default router;

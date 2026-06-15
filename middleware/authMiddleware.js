@@ -69,3 +69,18 @@ export const adminOnly = (req, res, next) => {
   }
 };
 
+/* ================= MODULE PERMISSION ================= */
+export const hasPermission = (moduleKey, action = "view") => (req, res, next) => {
+  if (req.user?.role === "admin") {
+    return next();
+  }
+
+  const permission = req.user?.permissions?.[moduleKey];
+
+  if (permission?.[action]) {
+    return next();
+  }
+
+  return res.status(403).json({ message: "Permission denied" });
+};
+

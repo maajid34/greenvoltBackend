@@ -72,6 +72,7 @@ const permissionsSchema = new mongoose.Schema(
     blogs: { type: modulePermissionSchema, default: () => ({ view: false, edit: false }) },
     partners: { type: modulePermissionSchema, default: () => ({ view: false, edit: false }) },
     testimonials: { type: modulePermissionSchema, default: () => ({ view: false, edit: false }) },
+    messages: { type: modulePermissionSchema, default: () => ({ view: false, edit: false }) },
     users: { type: modulePermissionSchema, default: () => ({ view: false, edit: false }) },
   },
   { _id: false }
